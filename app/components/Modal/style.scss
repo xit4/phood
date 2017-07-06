@@ -1,0 +1,79 @@
+.modal {
+  display:flex;
+  align-items: stretch;
+  .popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: scale(0);
+    z-index: 9999;
+    background: white;
+    border-radius:10px;
+    padding:15px;
+    animation: zoomIn .6s 1.1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+  }
+  .backdrop {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0.3);
+    animation:unfoldIn 1.5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+  }
+  &.out {
+    .backdrop {
+      transform: scale(1);
+      animation: unfoldOut 1s .3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;}
+    .popup {
+      animation: zoomOut .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+    }
+  }
+}
+
+body.modal-active{
+  overflow:hidden;
+}
+
+@keyframes unfoldIn {
+  0% {
+    transform:scaleY(.005) scaleX(0);
+  }
+  50% {
+    transform:scaleY(.005) scaleX(1);
+  }
+  100% {
+    transform:scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes unfoldOut {
+  0% {
+    transform:scaleY(1) scaleX(1);
+  }
+  50% {
+    transform:scaleY(.005) scaleX(1);
+  }
+  100% {
+    transform:scaleY(.005) scaleX(0);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform:translate(-50%,-50%) scale(0);
+  }
+  100% {
+    transform:translate(-50%,-50%) scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform:translate(-50%,-50%) scale(1);
+  }
+  100% {
+    transform:translate(-50%,-50%) scale(0);
+  }
+}

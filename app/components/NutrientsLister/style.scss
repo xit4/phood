@@ -1,0 +1,15 @@
+.nutrients-list{
+  display:flex;
+  flex-direction:column;
+
+  .nutrient{
+    display:flex;
+    justify-content: space-between;
+    .nutrient-name{
+
+    }
+    .nutrient-value{
+
+    }
+  }
+}

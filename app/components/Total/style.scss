@@ -1,0 +1,11 @@
+.total{
+  display:flex;
+  flex-direction: column;
+  .nutrient{
+    display:flex;
+    justify-content: space-between;
+    span{
+      white-space: nowrap;
+    }
+  }
+}

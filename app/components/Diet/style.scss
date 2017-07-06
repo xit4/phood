@@ -1,0 +1,18 @@
+.diet{
+  display: flex;
+  .title{
+    margin-bottom: 5px;
+  }
+  .left{
+
+  }
+  .center{
+    display:flex;
+    align-items: center;
+    hr{
+      margin: 0px 15px;
+    }
+  }
+  .right{
+  }
+}

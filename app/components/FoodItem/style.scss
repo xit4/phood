@@ -1,0 +1,38 @@
+.food-item{
+  display:flex;
+  transition: 1s;
+  justify-content: flex-start;
+  .food{
+    padding:5px;
+    height:2em;
+    display: flex;
+    align-items: center;
+    margin-left:50px;
+    cursor:pointer;
+  }
+  .add{
+    display:flex;
+    justify-content: center;
+    font-size: 30px;
+    color:white;
+    opacity: 0;
+    background-color: lightgreen;
+    width:5%;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-left:20px;
+    transition: background 1s, opacity 1s;
+    cursor:pointer;
+    &:hover{
+      background-color: forestgreen;
+    }
+  }
+  &:hover{
+    border-radius: 15px;
+    background-color: aliceblue;
+    transform: scale(1.02);
+    .add{
+      opacity: 1;
+    }
+  }
+}

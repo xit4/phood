@@ -1,0 +1,19 @@
+.diet-item{
+  margin: 10px 0px;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  input{
+    width:25px;
+    margin-left: 10px;
+  }
+  .item-container{
+    display: flex;
+    align-items: center;
+  }
+  .delete-item{
+    cursor: pointer;
+    height: 20px;
+    margin-right: 5px;
+  }
+}

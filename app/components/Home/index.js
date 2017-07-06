@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import api from '../../utils/api';
+import storage from '../../utils/storage';
+import manager from '../../utils/manager';
 import Header from '../Header';
 import FoodLister from '../FoodLister';
 import Modal from '../Modal';
@@ -8,12 +9,12 @@ import Diet from '../Diet';
 import './style.scss';
 
 class Home extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props);
     this.state = {
       isModalOpen: false,
       foodList: [],
-      dietList: JSON.parse(localStorage.getItem('dietList')) || [],
+      dietList: [],
       errorMessage: ''
     };
     this.handleSubmitFoodName = this.handleSubmitFoodName.bind(this);
@@ -23,107 +24,99 @@ class Home extends React.Component {
     this.handleOpenDiet = this.handleOpenDiet.bind(this);
     this.handleDeleteFood = this.handleDeleteFood.bind(this);
     this.handleChangeQuantity = this.handleChangeQuantity.bind(this);
+    this.setStateCallback = this.setStateCallback.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     if (nextProps.location.state === 'resetState') {
       this.resetState();
     }
   }
 
-  handleSubmitFoodName(foodName){
-    if(localStorage.getItem('lastSearchedFood') === foodName){
-      this.setState({foodList: JSON.parse(localStorage.getItem('foodList'))});
-      return;
-    }
-    api.fetchFoodsFromName(foodName)
-      .then( data => {
-        if(data.errorMessage){
-          this.setState({errorMessage: data.errorMessage});
-          return;
-        }
-        localStorage.setItem('lastSearchedFood', foodName);
-        localStorage.setItem('foodList', JSON.stringify(data.item));
-        this.setState({foodList: data.item, errorMessage: ''});
-      })
+  componentDidMount() {
+    const initialDietList = storage.getStoredObject('dietList', []);
+    this.setState({dietList: initialDietList});
   }
 
-  handleAddFood(food){
+  handleSubmitFoodName(foodName) {
+    manager.retrieveFoodListAndUpdateState(foodName, this.setStateCallback, this.state);
+  }
+
+  handleAddFood(food) {
     const {dietList, foodList} = this.state;
-    var newDiet = [...dietList].filter((el) => {return el.ndbno !== food.ndbno});
-    var newFoodList = [...foodList].filter((el) => {return el.ndbno !== food.ndbno});
-    let dietIcon = document.querySelector('.diet-icon');
-    dietIcon.classList.add('new-diet');
-    food.quantity = 0;
-    newDiet.push(food);
-    localStorage.setItem('dietList', JSON.stringify(newDiet));
-    this.setState({dietList: newDiet, foodList:newFoodList});
+    const newDiet = dietList.filter(el => el.ndbno !== food.ndbno);
+    const newFoodList = foodList.filter(el => el.ndbno !== food.ndbno);
+    const newFood = {
+      ...food,
+      quantity: 0
+    }
+    this.setState({headerClass: 'new-diet'});
+    const newNewDiet = [
+      ...newDiet,
+      newFood
+    ];
+    storage.storeObject('dietList', newNewDiet, this.setStateCallback);
+    storage.storeObject('foodList', newFoodList, this.setStateCallback);
   }
 
-  handleChangeQuantity(food, quantity){
-    var newDietList =  [...this.state.dietList];
-    newDietList.forEach((el)=>{
-      if(el.ndbno === food.ndbno){
+  handleChangeQuantity(food, quantity) {
+    const {dietList} = this.state;
+    const newDietList = dietList.map(el => {
+      if (el.ndbno === food.ndbno) {
         el.quantity = quantity;
       }
+      return el;
     })
-    localStorage.setItem('dietList', JSON.stringify(newDietList));
-    this.setState({dietList: newDietList});
+    storage.storeObject('dietList', newDietList, this.setStateCallback);
   }
 
-  handleOpenDiet(){
-    let dietIcon = document.querySelector('.diet-icon');
-    dietIcon.classList.remove('new-diet');
+  handleDeleteFood(food) {
+    const {dietList, foodList} = this.state;
+    const newDietList = dietList.filter(dietItem => dietItem.ndbno !== food.ndbno)
+
+    storage.storeObject('dietList', newDietList, this.setStateCallback);
+
+    if (foodList.length > 0) {
+      const newFoodList = [
+        food, ...foodList
+      ]
+      storage.storeObject('foodList', newFoodList, this.setStateCallback);
+    }
+  }
+
+  handleOpenDiet() {
+    this.setState({headerClass: ''});
     this.toggleModal(true);
   }
 
-  resetState(){
-    this.setState({foodList:[]});
+  resetState() {
+    this.setState({foodList: []});
   }
 
-  toggleModal(open){
+  setStateCallback(obj) {
+    this.setState(obj)
+  }
+
+  toggleModal(open) {
     this.setState({isModalOpen: open});
-  }
-
-  handleDeleteFood(food){
-    const {dietList} = this.state;
-
-    var newDietList = [...dietList].filter((dietItem) =>{
-      return dietItem.ndbno !== food.ndbno;
-    })
-
-    localStorage.setItem('dietList', JSON.stringify(newDietList));
-    this.setState({dietList: newDietList});
   }
 
   render() {
     const {dietList, isModalOpen, foodList, errorMessage} = this.state;
     return (
       <div className='home'>
-        <Header
-          onSubmitFoodName={this.handleSubmitFoodName}
-          onOpenDiet={this.handleOpenDiet}/>
-        <FoodLister
-          foodList={foodList}
-          onAddFood={this.handleAddFood}
-          errorMessage={errorMessage}/>
-        <Modal
-          className='diet-modal'
-          isOpen={isModalOpen}
-          onClose={()=>{this.toggleModal(false)}}>
-            <Diet
-              dietList={dietList}
-              onChangeQuantity={this.handleChangeQuantity}
-              onDeleteFood={this.handleDeleteFood}/>
+        <Header className={this.state.headerClass} onSubmitFoodName={this.handleSubmitFoodName} onOpenDiet={this.handleOpenDiet}/>
+        <FoodLister foodList={foodList} onAddFood={this.handleAddFood} errorMessage={errorMessage}/>
+        <Modal className='diet-modal' isOpen={isModalOpen} onClose={() => {
+          this.toggleModal(false)
+        }}>
+          <Diet dietList={dietList} onChangeQuantity={this.handleChangeQuantity} onDeleteFood={this.handleDeleteFood}/>
         </Modal>
       </div>
     )
   }
 }
 
-Home.propTypes = {
-
-}
-
+Home.propTypes = {}
 
 export default Home;

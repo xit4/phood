@@ -22,10 +22,9 @@
       background-color: orange;
     }
     &.new-diet{
-      box-shadow: 0px 0px 20px yellow;
+      animation: goldOutline 0.5s infinite linear alternate;
     }
   }
-
 }
 .header-closed{
   height:50px;

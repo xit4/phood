@@ -33,6 +33,7 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
+    "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "html-webpack-plugin": "^2.29.0",
     "node-sass": "^4.5.3",

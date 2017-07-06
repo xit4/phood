@@ -34,6 +34,7 @@ class Header extends React.Component {
 
   render() {
     const {foodName} = this.state;
+    const { className } = this.props;
     return (
       <div className='header'>
         <Link to={{pathname:'/', state:'resetState'}} onClick={this.resetSearchEngine}>
@@ -44,7 +45,7 @@ class Header extends React.Component {
           onChangeFoodName={this.handleChangeFoodName}
           foodName={foodName}/>
         <Link to={{pathname:'/'}} onClick={this.props.onOpenDiet}>
-          <img src='http://i.imgur.com/PZkiNPC.png' className="diet-icon" alt="diet-icon" />
+          <img src='http://i.imgur.com/PZkiNPC.png' className={`${className} diet-icon`} alt="diet-icon" />
         </Link>
       </div>
     )

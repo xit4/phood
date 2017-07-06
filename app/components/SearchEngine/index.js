@@ -15,14 +15,12 @@ class SearchEngine extends React.Component {
   componentDidMount(){
     var input = document.querySelector('.search-engine input');
 
-    input.addEventListener('focus', function(){
-    	let header = document.querySelector('.header');
-      header.classList.add('header-closed');
+    input.addEventListener('focus',() => {
+    	this.props.toggleHeader(false);
     })
-    input.addEventListener('blur', function(e){
+    input.addEventListener('blur', e => {
     	if(e.target.value === ''){
-        let header = document.querySelector('.header');
-        header.classList.remove('header-closed');
+        this.props.toggleHeader(true);
       }
     })
   }
@@ -57,10 +55,12 @@ class SearchEngine extends React.Component {
 SearchEngine.propTypes = {
   onChangeFoodName: PropTypes.func.isRequired,
   foodName: PropTypes.string.isRequired,
+  toggleHeader: PropTypes.func.isRequired
 }
 SearchEngine.defaultProps = {
   onChangeFoodName: PropTypes.func.isRequired,
   foodName: '',
+  toggleHeader: () => {}
 }
 
 export default SearchEngine;

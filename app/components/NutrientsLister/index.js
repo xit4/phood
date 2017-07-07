@@ -16,7 +16,7 @@ class NutrientsLister extends React.Component {
         {
           nutrientsList.map(nutrient =>{
             return (
-                <div
+              <div
                   key={nutrient.name}
                   className='nutrient'>
                     <div

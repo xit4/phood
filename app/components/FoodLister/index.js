@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FoodItem from '../FoodItem';
-import api from '../../utils/api';
+import manager from '../../utils/manager';
 import Modal from '../Modal';
 import NutrientsLister from '../NutrientsLister';
 import './style.scss';
 
 class FoodLister extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props);
     this.state = {
       isModalOpen: false,
@@ -17,21 +17,13 @@ class FoodLister extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal(open){
+  toggleModal(open) {
     this.setState({isModalOpen: open});
   }
 
-  handleClickFood(foodId){
+  handleClickFood(foodId) {
     this.toggleModal(true);
-    api.fetchFoodsInfo([foodId])
-      .then((data) =>{
-        if(data.errorMessage){
-          //TODO handle message
-          return;
-        }
-        this.setState({foodDetail: data[0].food});
-      }
-    )
+    manager.retrieveFoodInfo(foodId, (obj) => (this.setState(obj)));
   }
 
   render() {
@@ -66,7 +58,7 @@ class FoodLister extends React.Component {
                   food={food}
                   onClickFood={this.handleClickFood}
                   onAddFood={onAddFood}/>
-                )
+              )
             })
           }
           { errorMessage &&
@@ -89,6 +81,5 @@ FoodLister.defaultProps = {
   onAddFood: () => {},
   errorMessage: ''
 }
-
 
 export default FoodLister;

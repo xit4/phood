@@ -23,5 +23,24 @@ export default {
       storage.storeObject('foodList', newFoodList, setState);
       storage.storeString('lastSearchedFood', foodName);
     })
+  },
+  retrieveFoodInfo : function(foodId, setState) {
+    api.fetchFoodsInfo([foodId]).then((data) => {
+      if (data.errorMessage) {
+        setState({errorMessage: data.errorMessage})
+        return;
+      }
+      setState({foodDetail: data[0].food});
+    })
+  },
+  retrieveFoodsInfo : function(foodIdArray, setState) {
+    return api.fetchFoodsInfo(foodIdArray).then((data) => {
+      if (data.errorMessage) {
+        setState({errorMessage: data.errorMessage})
+        return;
+      }
+      setState({nutrientsInfo: data});
+      return data;
+    })
   }
 };

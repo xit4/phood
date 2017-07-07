@@ -6,6 +6,7 @@ class Modal extends React.Component {
   constructor (props){
     super(props);
     this.state = {
+      firstTime: true
     };
     this.handleClose = this.handleClose.bind(this);
   }
@@ -16,26 +17,28 @@ class Modal extends React.Component {
       this.props.onClose();
     }
   }
+
+  componentDidUpdate(){
+      const {isOpen} = this.props;
+      const {firstTime} = this.state;
+      if(isOpen && firstTime){
+        this.setState({firstTime: false});
+      }
+  }
   render() {
+    const {firstTime} = this.state;
     const {className, isOpen, children} = this.props;
-    var modal = document.querySelector(`.${className}`);
-    var body = document.querySelector('body');
+    if(firstTime && !isOpen){
+      return null;
+    }
+    let body = document.querySelector('body');
       if(!isOpen){
-        if(modal) {
-          modal.classList.add('out');
           body.classList.remove('modal-active');
-        }
-        else {
-          return null;
-        }
       }else{
-        if(modal){
-          modal.classList.remove('out');
           body.classList.add('modal-active');
-        }
       }
       return (
-        <div className={`modal ${className}`}>
+        <div className={`modal ${className}${isOpen ? '' : ' out'}`}>
           <div
             className='backdrop'
             onClick={e =>{this.handleClose(e)}}>
@@ -55,7 +58,7 @@ Modal.propTypes = {
 }
 
 Modal.defaultProps ={
-  isOpen: true,
+  isOpen: false,
   onClose: ()=>{},
   className: ''
 }

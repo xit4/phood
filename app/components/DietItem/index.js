@@ -17,7 +17,7 @@ class DietItem extends React.Component {
           <div className='item-container'>
             <img
               className='delete-item'
-              src='https://cdn2.iconfinder.com/data/icons/e-business-helper/240/627249-delete3-512.png'
+              src='./app/img/delete-icon.png'
               onClick={()=>{onDeleteFood(food)}}/>
             <span>-{food.name}</span>
           </div>

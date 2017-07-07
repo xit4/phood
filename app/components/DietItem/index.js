@@ -17,7 +17,7 @@ class DietItem extends React.Component {
           <div className='item-container'>
             <img
               className='delete-item'
-              src='./app/img/delete-icon.png'
+              src={require('../../img/delete-icon.png')}
               onClick={()=>{onDeleteFood(food)}}/>
             <span>-{food.name}</span>
           </div>

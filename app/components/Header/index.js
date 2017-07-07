@@ -35,18 +35,18 @@ class Header extends React.Component {
     const {className} = this.props;
     return (
       <div className={`header ${headerClass}`}>
-        <img src='./app/img/diet-icon-background.png' className={`${className} diet-icon-background`} alt="diet-icon-background"/>
+        <img src={require('../../img/diet-icon-background.png')} className={`${className} diet-icon-background`} alt="diet-icon-background"/>
         <Link to={{
           pathname: '/',
           state: 'resetState'
         }} onClick={this.resetSearchEngine}>
-          <img src='./app/img/food-dome.png' className="logo" alt="logo"/>
+          <img src={require('../../img/food-dome.png')} className="logo" alt="logo"/>
         </Link>
         <SearchEngine toggleHeader={this.toggleHeader} onSubmitFoodName={this.props.onSubmitFoodName} onChangeFoodName={this.handleChangeFoodName} foodName={foodName}/>
         <Link to={{
           pathname: '/'
         }} onClick={this.props.onOpenDiet}>
-          <img src='./app/img/apple-fruit.png' className={`${className} diet-icon`} alt="diet-icon"/>
+          <img src={require('../../img/apple-fruit.png')} className={`${className} diet-icon`} alt="diet-icon"/>
         </Link>
       </div>
     )

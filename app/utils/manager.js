@@ -24,7 +24,7 @@ export default {
       }
       storage.storeObject('foodList', newFoodList);
       const toBeShownFoodList = newFoodList.slice(0, 25);
-      setState({foodList: toBeShownFoodList, errorMessage: '', moreToShow: true});
+      setState({foodList: toBeShownFoodList, errorMessage: '', moreToShow: newFoodList.length > 25});
       storage.storeString('lastSearchedFood', foodName);
     })
   },

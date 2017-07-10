@@ -4,14 +4,13 @@ import qs from 'qs';
 const apikey = 'IzDE1kPXtVmBvVwRiJAqGuXJGWDI1fE6Nl9jM8uU';
 
 export default {
-  fetchFoodsFromName: function (foodname, max = 25, offset = 0) {
+  fetchFoodsFromName: function (foodname, offset = 0) {
     var encodedURI = window.encodeURI('https://api.nal.usda.gov/ndb/search/');
     return axios.get(encodedURI, {
         params: {
           q: foodname,
           format: 'json',
           sort: 'n',
-          max: max,
           offset: offset,
           ds: 'Standard Reference',
           api_key: apikey

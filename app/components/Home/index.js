@@ -15,7 +15,8 @@ class Home extends React.Component {
       isModalOpen: false,
       foodList: [],
       dietList: [],
-      errorMessage: ''
+      errorMessage: '',
+      moreToShow: false
     };
     this.handleSubmitFoodName = this.handleSubmitFoodName.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -25,6 +26,7 @@ class Home extends React.Component {
     this.handleDeleteFood = this.handleDeleteFood.bind(this);
     this.handleChangeQuantity = this.handleChangeQuantity.bind(this);
     this.setStateCallback = this.setStateCallback.bind(this);
+    this.handleLoadMore = this.handleLoadMore.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,13 +86,17 @@ class Home extends React.Component {
     }
   }
 
+  handleLoadMore(){
+    manager.retrieveMoreFoodAndUpdateState(this.setStateCallback, this.state);
+  }
+
   handleOpenDiet() {
     this.setState({headerClass: ''});
     this.toggleModal(true);
   }
 
   resetState() {
-    this.setState({foodList: []});
+    this.setState({foodList: [], errorMessage: '', moreToShow: false});
   }
 
   setStateCallback(obj) {
@@ -102,11 +108,11 @@ class Home extends React.Component {
   }
 
   render() {
-    const {dietList, isModalOpen, foodList, errorMessage} = this.state;
+    const {dietList, isModalOpen, foodList, errorMessage, moreToShow} = this.state;
     return (
       <div className='home'>
         <Header className={this.state.headerClass} onSubmitFoodName={this.handleSubmitFoodName} onOpenDiet={this.handleOpenDiet}/>
-        <FoodLister foodList={foodList} onAddFood={this.handleAddFood} errorMessage={errorMessage}/>
+        <FoodLister foodList={foodList} onAddFood={this.handleAddFood} moreToLoad ={moreToShow} onLoadMore={this.handleLoadMore} errorMessage={errorMessage}/>
         <Modal className='diet-modal' isOpen={isModalOpen} onClose={() => {
           this.toggleModal(false)
         }}>

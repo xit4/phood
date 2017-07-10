@@ -27,7 +27,7 @@ class FoodLister extends React.Component {
   }
 
   render() {
-    const {foodList, onAddFood, errorMessage} = this.props;
+    const {foodList, onAddFood, errorMessage, onLoadMore, moreToLoad} = this.props;
     const {foodDetail} = this.state;
     return (
       <div>
@@ -65,6 +65,10 @@ class FoodLister extends React.Component {
             <span>{errorMessage}</span>
           }
         </div>
+        <div className='load-more' onClick={onLoadMore}>
+          { moreToLoad &&
+            <div>Load More</div>}
+        </div>
       </div>
     )
   }
@@ -73,13 +77,17 @@ class FoodLister extends React.Component {
 FoodLister.propTypes = {
   foodList: PropTypes.array.isRequired,
   onAddFood: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string.isRequired
+  errorMessage: PropTypes.string.isRequired,
+  moreToLoad: PropTypes.bool.isRequired,
+  onLoadMore: PropTypes.func.isRequired,
 }
 
 FoodLister.defaultProps = {
   foodList: [],
   onAddFood: () => {},
-  errorMessage: ''
+  onLoadMore: () => {},
+  errorMessage: '',
+  moreToLoad: ''
 }
 
 export default FoodLister;

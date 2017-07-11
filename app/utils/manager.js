@@ -18,10 +18,10 @@ export default {
         return;
       }
       let newFoodList = data.item;
-      if (state) {
-        const {dietList} = state;
-        newFoodList = data.item.filter(el => dietList.every(food => food.ndbno !== el.ndbno))
-      }
+      // if (state) {
+      //   const {dietList} = state;
+      //   newFoodList = data.item.filter(el => dietList.every(food => food.ndbno !== el.ndbno))
+      // }
       storage.storeObject('foodList', newFoodList);
       const toBeShownFoodList = newFoodList.slice(0, 25);
       setState({foodList: toBeShownFoodList, errorMessage: '', moreToShow: newFoodList.length > 25});

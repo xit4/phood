@@ -1,0 +1,58 @@
+.diets{
+  display: flex;
+  .title{
+    margin-bottom: 20px;
+  }
+  .left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .center{
+    display:flex;
+    align-items: center;
+    hr{
+      margin: 0px 15px;
+    }
+  }
+  .right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .add-diet{
+      border-radius: 15px;
+      display: flex;
+      margin:1px;
+      padding:5px;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 75px;
+      width: 75px;
+      background-color: mediumseagreen;
+      &:hover{
+        background-color: lightgreen;
+      }
+    }
+    .diet-name-picker{
+      display: flex;
+      flex-direction: column;
+      input{
+        margin: 1em 0;
+      }
+      .cancel-diet{
+        border-radius: 15px;
+        display: flex;
+        padding:5px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        height: 25px;
+        background-color: firebrick;
+        &:hover{
+          background-color: indianred;
+        }
+      }
+    }
+  }
+}

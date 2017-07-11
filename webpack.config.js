@@ -10,6 +10,9 @@ module.exports = {
       publicPath: '/'
     },
     devtool: 'source-map',
+    devServer:{
+      historyApiFallback: true
+    },
     module: {
       rules: [
         {

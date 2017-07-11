@@ -10,10 +10,10 @@ class DietLister extends React.Component {
   }
 
   render() {
-    const {dietList, onChangeQuantity, onDeleteFood} = this.props;
+    const {dietList, onChangeQuantity, onDeleteFood, dietName} = this.props;
     return (
       <div className='diet-lister'>
-        <span className='title'>Diet</span>
+        <span className='title'>{dietName}</span>
         <hr style={{border:'solid white'}}></hr>
         { dietList.length > 0 &&
           dietList.map((food)=>{
@@ -23,12 +23,12 @@ class DietLister extends React.Component {
                 onDeleteFood={onDeleteFood}
                 key={food.name}
                 food={food}/>
-              )
+            )
           })
         }
         { dietList.length === 0 &&
           <div>
-            No items have been added to the diet.
+            {`No items have been added to this diet (${dietName}).`}
           </div>
         }
       </div>
@@ -37,12 +37,14 @@ class DietLister extends React.Component {
 }
 
 DietLister.propTypes = {
+  dietName: PropTypes.string.isRequired,
   dietList: PropTypes.array.isRequired,
   onChangeQuantity: PropTypes.func.isRequired,
   onDeleteFood: PropTypes.func.isRequired,
 }
 
 DietLister.defaultProps = {
+  dietName:'',
   dietList: []
 }
 

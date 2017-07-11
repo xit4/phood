@@ -1,18 +1,17 @@
-.diet{
+.diet-container {
   display: flex;
-  .title{
-    margin-bottom: 5px;
-  }
-  .left{
-
-  }
-  .center{
-    display:flex;
-    align-items: center;
-    hr{
-      margin: 0px 15px;
+  flex-direction: column;
+  .diet{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    .title {
+      font-size: 2em;
+      margin: 5px;
     }
-  }
-  .right{
+
+    .left {margin: 0px 10px}
+
+    .right {margin: 0px 10px}
   }
 }

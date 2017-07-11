@@ -26,36 +26,42 @@ class Header extends React.Component {
 
   toggleHeader(isOpen) {
     this.setState({
-      headerClass: isOpen  ? ''  : 'header-closed'
+      headerClass: isOpen
+        ? ''
+        : 'header-closed'
     });
   }
 
   render() {
     const {foodName, headerClass} = this.state;
-    const {className} = this.props;
+    const {className, hasSearchEngine} = this.props;
     return (
-      <div className={`header ${headerClass}`}>
+      <div className={`header ${headerClass} ${hasSearchEngine ? '' : 'header-closed'}`}>
         <img src={require('../../img/diet-icon-background.png')} className={`${className} diet-icon-background`} alt="diet-icon-background"/>
         <Link to={{
           pathname: '/',
-          state: 'resetState'
+          query: 'resetState'
         }} onClick={this.resetSearchEngine}>
           <img src={require('../../img/food-dome.png')} className="logo" alt="logo"/>
         </Link>
-        <SearchEngine toggleHeader={this.toggleHeader} onSubmitFoodName={this.props.onSubmitFoodName} onChangeFoodName={this.handleChangeFoodName} foodName={foodName}/>
-        <Link to={{
-          pathname: '/'
-        }} onClick={this.props.onOpenDiet}>
-          <img src={require('../../img/apple-fruit.png')} className={`${className} diet-icon`} alt="diet-icon"/>
-        </Link>
+        {hasSearchEngine && <SearchEngine toggleHeader={this.toggleHeader} onSubmitFoodName={this.props.onSubmitFoodName} onChangeFoodName={this.handleChangeFoodName} foodName={foodName}/>}
+        <img onClick={this.props.onOpenDiet} src={require('../../img/apple-fruit.png')} className={`${className} diet-icon`} alt="diet-icon"/>
+
       </div>
     )
   }
 }
 
 Header.propTypes = {
-  onSubmitFoodName: PropTypes.func.isRequired,
-  onOpenDiet: PropTypes.func.isRequired
+  onSubmitFoodName: PropTypes.func,
+  onOpenDiet: PropTypes.func,
+  hasSearchEngine: PropTypes.bool,
+}
+
+Header.defaultProps = {
+  hasSearchEngine: true,
+  onSubmitFoodName: () => {},
+  onOpenDiet: () => {},
 }
 
 export default Header;

@@ -38,13 +38,13 @@ class DietPicker extends React.Component {
   }
 
   render() {
-    const {dietsList, onCreateDiet, onSelectDiet} = this.props;
+    const {dietsList, onCreateDiet, onSelectDiet, onDeleteDiet} = this.props;
     const {addNewDiet, newDietName} = this.state;
     return (
       <div className='diets'>
         <div className='left'>
           <span className='title'>Add food to an existing diet...</span>
-          <DietGrid dietsList={dietsList} onSelectDiet={onSelectDiet}/>
+          <DietGrid dietsList={dietsList} onSelectDiet={onSelectDiet} onDeleteDiet={onDeleteDiet}/>
         </div>
         <div className='center'>
           <hr size="100"></hr>
@@ -74,7 +74,8 @@ class DietPicker extends React.Component {
 DietPicker.propTypes = {
   dietsList: PropTypes.array.isRequired,
   onCreateDiet: PropTypes.func.isRequired,
-  onSelectDiet: PropTypes.func.isRequired
+  onSelectDiet: PropTypes.func.isRequired,
+  onDeleteDiet: PropTypes.func.isRequired,
 }
 
 export default DietPicker;

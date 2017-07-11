@@ -10,12 +10,12 @@ class DietLinker extends React.Component {
   }
 
   render() {
-    const {dietsList, onSelectDiet} = this.props;
+    const {dietsList, onSelectDiet, onDeleteDiet} = this.props;
     return (
       <div className='diet-linker'>
         <span className='title'>Your diets</span>
         <hr></hr>
-        {(dietsList.length > 0 && <DietGrid dietsList={dietsList} onSelectDiet={onSelectDiet}/>) || <span className='message'>You have no diets</span>}
+        {(dietsList.length > 0 && <DietGrid dietsList={dietsList} onSelectDiet={onSelectDiet} onDeleteDiet={onDeleteDiet}/>) || <span className='message'>You have no diets</span>}
       </div>
     )
   }
@@ -23,7 +23,8 @@ class DietLinker extends React.Component {
 
 DietLinker.propTypes = {
   dietsList: PropTypes.array.isRequired,
-  onSelectDiet: PropTypes.func.isRequired
+  onSelectDiet: PropTypes.func.isRequired,
+  onDeleteDiet: PropTypes.func.isRequired,
 }
 
 export default DietLinker;

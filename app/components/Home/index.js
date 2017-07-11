@@ -29,7 +29,7 @@ class Home extends React.Component {
     this.handleLoadMore = this.handleLoadMore.bind(this);
     this.handleCreateDiet = this.handleCreateDiet.bind(this);
     this.handleSelectDiet = this.handleSelectDiet.bind(this);
-
+    this.handleDeleteDiet = this.handleDeleteDiet.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +81,12 @@ class Home extends React.Component {
     this.toggleModal(false);
   }
 
+  handleDeleteDiet(dietToDelete){
+    const {dietsList} = this.state;
+    const newDietsList = [...dietsList].filter(diet => diet.id !== dietToDelete.id);
+    storage.storeObject('dietsList', newDietsList, this.setStateCallback);
+  }
+
   handleLoadMore() {
     manager.retrieveMoreFoodAndUpdateState(this.setStateCallback, this.state);
   }
@@ -119,7 +125,7 @@ class Home extends React.Component {
           this.setState({foodToAdd: {}});
           this.toggleModal(false);
         }}>
-          {(foodToAdd.ndbno && <DietPicker dietsList={dietsList} onSelectDiet={this.handleSelectDiet} onCreateDiet={this.handleCreateDiet}/>) || <DietLinker dietsList={dietsList} onSelectDiet={diet => {
+          {(foodToAdd.ndbno && <DietPicker dietsList={dietsList} onSelectDiet={this.handleSelectDiet} onCreateDiet={this.handleCreateDiet} onDeleteDiet={this.handleDeleteDiet}/>) || <DietLinker dietsList={dietsList} onDeleteDiet={this.handleDeleteDiet} onSelectDiet={diet => {
             this.props.history.push(`/diet/${diet.id}`)
           }}/>}
         </Modal>

@@ -28,7 +28,7 @@ class DietLister extends React.Component {
         }
         { dietList.length === 0 &&
           <div>
-            {`No items have been added to this diet (${dietName}).`}
+            {`No items have been added to this diet.`}
           </div>
         }
       </div>

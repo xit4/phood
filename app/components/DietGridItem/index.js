@@ -18,7 +18,7 @@ class DietGridItem extends React.Component {
   render() {
     const {dietItem: diet, onSelectDiet} = this.props;
     return (
-      <div className='diet-grid-item selectable' key={diet.id} onClick={() => {onSelectDiet(diet)}}>
+      <div className='diet-grid-item selectable' onClick={() => {onSelectDiet(diet)}}>
         <span onClick={(event)=>{
           this.handleDeleteDiet(event, diet)}}>╳</span>
         <img src={require('../../img/' + (diet.icon || 'apple-icon') + '.png')} className={`diet-icon selectable`} alt={`diet ${diet.name}`}/>

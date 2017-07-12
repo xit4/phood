@@ -13,7 +13,7 @@ class DietGrid extends React.Component {
     const {dietsList, onSelectDiet, onDeleteDiet} = this.props;
     return (
       <div className='diet-grid'>
-        {dietsList.map(diet => <DietGridItem key={diet.id} dietItem={diet} onDeleteDiet={onDeleteDiet} onSelectDiet={onSelectDiet}/>)}
+        {dietsList.map((diet, index) => <DietGridItem key={index} dietItem={diet} onDeleteDiet={onDeleteDiet} onSelectDiet={onSelectDiet}/>)}
       </div>
     )
   }

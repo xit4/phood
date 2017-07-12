@@ -45,8 +45,11 @@ class Header extends React.Component {
           <img src={require('../../img/food-dome.png')} className="logo" alt="logo"/>
         </Link>
         {hasSearchEngine && <SearchEngine toggleHeader={this.toggleHeader} onSubmitFoodName={this.props.onSubmitFoodName} onChangeFoodName={this.handleChangeFoodName} foodName={foodName}/>}
-        <img onClick={this.props.onOpenDiet} src={require('../../img/apple-fruit.png')} className={`${className} diet-icon`} alt="diet-icon"/>
-
+        <Link to={{
+          pathname: '/diet',
+        }}>
+          <img src={require('../../img/apple-icon.png')} className={`${className} diet-icon`} alt="diet-icon"/>
+        </Link>
       </div>
     )
   }
@@ -54,14 +57,13 @@ class Header extends React.Component {
 
 Header.propTypes = {
   onSubmitFoodName: PropTypes.func,
-  onOpenDiet: PropTypes.func,
   hasSearchEngine: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 Header.defaultProps = {
   hasSearchEngine: true,
   onSubmitFoodName: () => {},
-  onOpenDiet: () => {},
 }
 
 export default Header;

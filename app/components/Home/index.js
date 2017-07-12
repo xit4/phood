@@ -53,12 +53,20 @@ class Home extends React.Component {
   }
 
   handleCreateDiet(newDietName) {
+    const imagesArray = [
+      'banana-icon',
+      'apple-icon',
+      'pear-icon',
+      'strawberry-icon',
+      'melon-icon'
+    ]
     const {dietsList} = this.state;
     let newDietsList = [
       ...dietsList, {
         id: dietsList.length,
         name: newDietName,
-        items: {}
+        items: {},
+        icon: imagesArray[Math.floor(Math.random()*imagesArray.length)]
       }
     ];
     this.setState({dietsList: newDietsList});
@@ -76,12 +84,12 @@ class Home extends React.Component {
         [foodToAddComplete.ndbno]: foodToAddComplete
       }
     }
-    this.setState({dietsList: newDietsList, foodToAdd: {}});
+    this.setState({dietsList: newDietsList, foodToAdd: {}, headerClass: 'new-diet'});
     storage.storeObject('dietsList', newDietsList);
     this.toggleModal(false);
   }
 
-  handleDeleteDiet(dietToDelete){
+  handleDeleteDiet(dietToDelete) {
     const {dietsList} = this.state;
     const newDietsList = [...dietsList].filter(diet => diet.id !== dietToDelete.id);
     storage.storeObject('dietsList', newDietsList, this.setStateCallback);
@@ -125,9 +133,7 @@ class Home extends React.Component {
           this.setState({foodToAdd: {}});
           this.toggleModal(false);
         }}>
-          {(foodToAdd.ndbno && <DietPicker dietsList={dietsList} onSelectDiet={this.handleSelectDiet} onCreateDiet={this.handleCreateDiet} onDeleteDiet={this.handleDeleteDiet}/>) || <DietLinker dietsList={dietsList} onDeleteDiet={this.handleDeleteDiet} onSelectDiet={diet => {
-            this.props.history.push(`/diet/${diet.id}`)
-          }}/>}
+          {foodToAdd.ndbno && <DietPicker dietsList={dietsList} onSelectDiet={this.handleSelectDiet} onCreateDiet={this.handleCreateDiet} onDeleteDiet={this.handleDeleteDiet}/>}
         </Modal>
       </div>
     )

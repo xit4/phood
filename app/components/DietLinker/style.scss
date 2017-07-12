@@ -1,11 +1,16 @@
 .diet-linker {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  hr{
-    border: 1px solid white;
-  }
-  .title {
-    font-size: 1.3em;
+  .diet-linker-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    hr{
+      border: 1px solid white;
+    }
+    .title {
+      font-size: 1.3em;
+    }
   }
 }

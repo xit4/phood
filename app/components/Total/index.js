@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import manager from '../../utils/manager';
+import {Link} from 'react-router-dom';
 import './style.scss';
 
 class Total extends React.Component {
@@ -73,13 +74,22 @@ class Total extends React.Component {
             border: 'solid white'
           }}></hr>
         </div>
-}
+        }
         {Object.keys(totalNutrients).map((nutrientName) => {
           let nutrient = totalNutrients[nutrientName];
           return (
             <div className='nutrient' key={nutrient.name}>
               <span>{nutrient.name}:</span>
               <span>{nutrient.value.toFixed(2)} {nutrient.unit}</span>
+              {
+                nutrient.name==='Energy' && nutrient.value.toFixed(0) == 27000 &&
+                <div>
+                  <br></br>
+                  <b>Il primo indizio sei TU</b>
+                  <br></br>
+                  <Link to={'../minesweeper'}>Prossima sfida</Link>
+                </div>
+              }
             </div>
           )
         })

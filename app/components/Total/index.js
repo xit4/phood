@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import manager from '../../utils/manager';
 import {Link} from 'react-router-dom';
 import _ from 'lodash';
 import './style.scss';
@@ -40,28 +39,12 @@ class Total extends React.Component {
     this.setState({totalNutrients: newTotalNutrients});
   }
 
-  componentDidMount() {
+  componentDidMount(){
     const {dietList} = this.props;
-    if (!_.isEmpty(dietList)) {
-      this.getNutrientsForDiet(dietList);
-    }
+    this.computeTotals(dietList);
   }
-
   componentWillReceiveProps(nextProps) {
-    const {dietList} = this.props;
-    if (_.size(nextProps.dietList) > _.size(dietList)) {
-      this.getNutrientsForDiet(nextProps.dietList);
-    } else {
-      this.computeTotals(nextProps.dietList);
-    }
-  }
-
-  getNutrientsForDiet(dietList) {
-    manager.retrieveFoodsInfo(_.map(dietList, food => food.ndbno), (obj) => {
-      this.setState(obj)
-    }).then(() => {
-      this.computeTotals();
-    })
+    this.computeTotals(nextProps.dietList);
   }
 
   render() {
@@ -83,15 +66,6 @@ class Total extends React.Component {
               <div className='nutrient' key={nutrient.name}>
                 <span>{nutrient.name}:</span>
                 <span>{nutrient.value.toFixed(2)} {nutrient.unit}</span>
-                {
-                  nutrient.name==='Energy' && nutrient.value.toFixed(0) == 27000 &&
-                  <div>
-                    <br></br>
-                    <b>Il primo indizio sei TU</b>
-                    <br></br>
-                    <Link to={'../minesweeper'}>Prossima sfida</Link>
-                  </div>
-                }
               </div>
             )
           })

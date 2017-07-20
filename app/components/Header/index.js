@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SearchEngine from '../SearchEngine';
 import {Link} from 'react-router-dom';
+import SearchEngine from '../SearchEngine';
+import { resetFoodList } from '../../actions';
+import { connect } from 'react-redux';
 import './style.scss';
 
 class Header extends React.Component {
@@ -22,6 +24,7 @@ class Header extends React.Component {
 
   resetSearchEngine() {
     this.setState({foodName: '', headerClass: ''})
+    this.props.resetFoodList();
   }
 
   toggleHeader(isOpen) {
@@ -40,7 +43,6 @@ class Header extends React.Component {
         <img src={require('../../img/diet-icon-background.png')} className={`${className} diet-icon-background`} alt="diet-icon-background"/>
         <Link to={{
           pathname: '/',
-          query: 'resetState'
         }} onClick={this.resetSearchEngine}>
           <img src={require('../../img/food-dome.png')} className="logo" alt="logo"/>
         </Link>
@@ -58,6 +60,7 @@ class Header extends React.Component {
 Header.propTypes = {
   hasSearchEngine: PropTypes.bool,
   className: PropTypes.string,
+  resetFoodList: PropTypes.func.isRequired
 }
 
 Header.defaultProps = {
@@ -65,4 +68,4 @@ Header.defaultProps = {
   onSubmitFoodName: () => {},
 }
 
-export default Header;
+export default connect(null, { resetFoodList })(Header);

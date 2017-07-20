@@ -5,8 +5,7 @@ import './style.scss';
 class FoodItem extends React.Component {
   constructor (props){
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {

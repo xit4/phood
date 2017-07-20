@@ -218,7 +218,7 @@ class Field extends React.Component {
     const {fieldObject: field, isGameLost, isGameWon} = this.state;
     var fieldArray = Object.keys(field);
     return (
-       (isGameWon && <div><span>Vittoria</span> <b>Il secondo indizio è LIPS</b></div>)  ||
+       (isGameWon && <span>Vittoria</span>)  ||
        (
          <div>{isGameLost && <div><b>Game Over</b> <u onClick={() => {window.location.reload()}}> Riprova </u><br></br></div>}
            <div className='field' style={{

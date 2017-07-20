@@ -1,6 +1,7 @@
 import {
   FETCH_FOOD_LIST_OK,
-  FETCH_FOOD_INFO_OK
+  FETCH_FOOD_INFO_OK,
+  RESET_FOOD_LIST
 } from '../actions'
 
 import _ from 'lodash';
@@ -17,6 +18,8 @@ export default function (state = {}, action) {
           nutrients: action.foodInfo.nutrients
         }
       }
+    case RESET_FOOD_LIST:
+      return {}
     default:
       return state;
   }

@@ -14,6 +14,7 @@ export const DELETE_FOOD = 'DELETE_FOOD';
 export const UPDATE_FOOD_NUTRIENTS = 'UPDATE_FOOD_NUTRIENTS';
 export const UPDATE_FOOD_NUTRIENTS_OK = 'UPDATE_FOOD_NUTRIENTS_OK';
 export const UPDATE_FOOD_NUTRIENTS_KO = 'UPDATE_FOOD_NUTRIENTS_KO';
+export const RESET_FOOD_LIST = 'RESET_FOOD_LIST';
 
 function fetchFoodListOk(foodList){
   return {
@@ -65,7 +66,6 @@ export function saveFood(food){
 }
 
 export function createDiet(diet){
-
   return {
     type: CREATE_DIET,
     diet
@@ -112,6 +112,12 @@ export function updateFoodNutrientsKo(errorMessage){
   return {
     type: UPDATE_FOOD_NUTRIENTS_KO,
     errorMessage
+  }
+}
+
+export function resetFoodList(){
+  return {
+    type: RESET_FOOD_LIST,
   }
 }
 

@@ -72,7 +72,7 @@ class DietPicker extends React.Component {
 }
 
 DietPicker.propTypes = {
-  dietsList: PropTypes.array.isRequired,
+  dietsList: PropTypes.object.isRequired,
   onCreateDiet: PropTypes.func.isRequired,
   onSelectDiet: PropTypes.func.isRequired,
   onDeleteDiet: PropTypes.func.isRequired,

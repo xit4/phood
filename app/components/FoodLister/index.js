@@ -4,6 +4,8 @@ import FoodItem from '../FoodItem';
 import manager from '../../utils/manager';
 import Modal from '../Modal';
 import NutrientsLister from '../NutrientsLister';
+import { fetchFoodInfo } from '../../actions';
+import { connect } from 'react-redux';
 import './style.scss';
 
 class FoodLister extends React.Component {
@@ -11,7 +13,7 @@ class FoodLister extends React.Component {
     super(props);
     this.state = {
       isModalOpen: false,
-      foodDetail: null
+      selectedFood: null
     };
     this.handleClickFood = this.handleClickFood.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -23,35 +25,44 @@ class FoodLister extends React.Component {
 
   handleClickFood(foodId) {
     this.toggleModal(true);
-    manager.retrieveFoodInfo(foodId, (obj) => (this.setState(obj)));
+    this.props.fetchFoodInfo(foodId);
+    this.setState({selectedFood: foodId})
   }
 
   render() {
-    const {foodList, onAddFood, errorMessage, onLoadMore, moreToLoad} = this.props;
-    const {foodDetail} = this.state;
+    const {
+      foodList,
+      onAddFood,
+      errors,
+      onLoadMore,
+      moreToLoad,
+      fetchingFoodList
+    } = this.props;
+    const { selectedFood } = this.state;
+    const foodDetail = foodList[selectedFood];
     return (
       <div>
         <Modal
           className='nutrients-modal'
           isOpen={this.state.isModalOpen}
           onClose={()=>{this.toggleModal(false)}}>
-          { foodDetail !== null &&
+          { foodDetail !== undefined &&
             <div>
-              <span className='title'>{foodDetail.desc.name}</span>
+              <span className='title'>{foodDetail.name}</span>
               <hr></hr>
               <NutrientsLister
                 nutrientsList={foodDetail.nutrients}/>
             </div>
           }
-          { foodDetail === null &&//TODO spinner
+          { foodDetail === undefined &&//TODO spinner
             <div>
               Spinner
             </div>
           }
         </Modal>
         <div className='food-lister'>
-          {foodList.length > 0 && !errorMessage &&
-            foodList.map(food =>{
+          {!_.isEmpty(foodList) && !errors.foodListError &&
+            _.map(foodList,food =>{
               return(
                 <FoodItem
                   key={food.name}
@@ -61,8 +72,8 @@ class FoodLister extends React.Component {
               )
             })
           }
-          { errorMessage &&
-            <span>{errorMessage}</span>
+          { errors.foodListError &&
+            <span>{errors.foodListError}</span>
           }
         </div>
         <div className='load-more' onClick={onLoadMore}>
@@ -75,19 +86,23 @@ class FoodLister extends React.Component {
 }
 
 FoodLister.propTypes = {
-  foodList: PropTypes.array.isRequired,
+  foodList: PropTypes.object.isRequired,
   onAddFood: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string.isRequired,
+  errors: PropTypes.object.isRequired,
   moreToLoad: PropTypes.bool.isRequired,
   onLoadMore: PropTypes.func.isRequired,
 }
 
 FoodLister.defaultProps = {
-  foodList: [],
+  foodList: {},
   onAddFood: () => {},
   onLoadMore: () => {},
-  errorMessage: '',
+  errors: '',
   moreToLoad: ''
 }
 
-export default FoodLister;
+function mapStateToProps({ foodList, errors }){
+  return { foodList , errors };
+}
+
+export default connect(mapStateToProps, { fetchFoodInfo })(FoodLister);

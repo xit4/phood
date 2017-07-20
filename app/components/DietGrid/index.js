@@ -13,14 +13,17 @@ class DietGrid extends React.Component {
     const {dietsList, onSelectDiet, onDeleteDiet} = this.props;
     return (
       <div className='diet-grid'>
-        {dietsList.map((diet, index) => <DietGridItem key={index} dietItem={diet} onDeleteDiet={onDeleteDiet} onSelectDiet={onSelectDiet}/>)}
+        {
+          _.map(dietsList,
+            (diet, index) => <DietGridItem key={index} dietItem={diet} onDeleteDiet={onDeleteDiet} onSelectDiet={onSelectDiet}/>)
+        }
       </div>
     )
   }
 }
 
 DietGrid.propTypes = {
-  dietsList: PropTypes.array.isRequired,
+  dietsList: PropTypes.object.isRequired,
   onSelectDiet: PropTypes.func.isRequired,
   onDeleteDiet: PropTypes.func.isRequired,
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { fetchFoodList } from '../../actions';
+import { connect } from 'react-redux';
 import './style.scss';
 
 class SearchEngine extends React.Component {
@@ -27,7 +29,7 @@ class SearchEngine extends React.Component {
 
   handleSubmit(event){
     event.preventDefault();
-    this.props.onSubmitFoodName(this.props.foodName)
+    this.props.fetchFoodList(this.props.foodName)
   }
 
   handleChange(event){
@@ -63,4 +65,4 @@ SearchEngine.defaultProps = {
   toggleHeader: () => {}
 }
 
-export default SearchEngine;
+export default connect(null, { fetchFoodList })(SearchEngine);

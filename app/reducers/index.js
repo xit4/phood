@@ -1,14 +1,16 @@
-const rootReducer = function (state = {}, action) {
-  switch(action.type){
-    default:
-      return state;
-  }
-}
+import { combineReducers } from 'redux';
+import _ from 'lodash';
+import foodListReducer from './reducer_foodlist';
+import dietListReducer from './reducer_dietlist';
+import savedFoodsReducer from './reducer_savedfoods';
+import errorReducer from './reducer_error';
 
+const rootReducer = combineReducers({
+    foodList: foodListReducer,
+    savedFoods: savedFoodsReducer,
+    dietsList: dietListReducer,
+    errors: errorReducer
+  });
 
-// combineReducers({
-//   posts: PostsReducer,
-//   form: formReducer
-// });
 
 export default rootReducer;

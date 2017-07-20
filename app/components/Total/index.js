@@ -2,30 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import manager from '../../utils/manager';
 import {Link} from 'react-router-dom';
+import _ from 'lodash';
 import './style.scss';
 
 class Total extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalNutrients: {},
-      nutrientsInfo: []
+      totalNutrients: {}
     };
     this.computeTotals = this.computeTotals.bind(this);
   }
 
   computeTotals(dietList = this.props.dietList) {
     let newTotalNutrients = {}
-    const {nutrientsInfo} = this.state;
-    dietList.map(food => {
-      const foodNutrientsArray = nutrientsInfo.filter(el => el.food.desc.ndbno === food.ndbno);
-
+    const {foodNutrientsArray} = this.props;
+    _.map(dietList, food => {
       if(foodNutrientsArray.length === 0){
         return;
       }
-      let foodNutrients = foodNutrientsArray[0].food.nutrients;
-
-      foodNutrients.forEach(nutrient => {
+      const foodNutrients = foodNutrientsArray.filter(nutrients => nutrients.ndbno === food.ndbno)
+      const nutrientsList = foodNutrients[0].nutrients;
+      if(!nutrientsList){
+        return;
+      }
+      nutrientsList.forEach(nutrient => {
         let prevNutrientValue = newTotalNutrients[nutrient.name]
           ? newTotalNutrients[nutrient.name].value
           : 0;
@@ -41,14 +42,14 @@ class Total extends React.Component {
 
   componentDidMount() {
     const {dietList} = this.props;
-    if (dietList.length > 0) {
+    if (!_.isEmpty(dietList)) {
       this.getNutrientsForDiet(dietList);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const {dietList} = this.props;
-    if (nextProps.dietList.length > dietList.length) {
+    if (_.size(nextProps.dietList) > _.size(dietList)) {
       this.getNutrientsForDiet(nextProps.dietList);
     } else {
       this.computeTotals(nextProps.dietList);
@@ -56,7 +57,7 @@ class Total extends React.Component {
   }
 
   getNutrientsForDiet(dietList) {
-    manager.retrieveFoodsInfo(dietList.map(food => food.ndbno), (obj) => {
+    manager.retrieveFoodsInfo(_.map(dietList, food => food.ndbno), (obj) => {
       this.setState(obj)
     }).then(() => {
       this.computeTotals();
@@ -68,43 +69,45 @@ class Total extends React.Component {
     const {totalNutrients} = this.state;
     return (
       <div className='total'>
-        {dietList.length > 0 && <div>
+        {!_.isEmpty(dietList) && <div>
           <span className='title'>Total</span>
           <hr style={{
             border: 'solid white'
           }}></hr>
         </div>
         }
-        {Object.keys(totalNutrients).map((nutrientName) => {
-          let nutrient = totalNutrients[nutrientName];
-          return (
-            <div className='nutrient' key={nutrient.name}>
-              <span>{nutrient.name}:</span>
-              <span>{nutrient.value.toFixed(2)} {nutrient.unit}</span>
-              {
-                nutrient.name==='Energy' && nutrient.value.toFixed(0) == 27000 &&
-                <div>
-                  <br></br>
-                  <b>Il primo indizio sei TU</b>
-                  <br></br>
-                  <Link to={'../minesweeper'}>Prossima sfida</Link>
-                </div>
-              }
-            </div>
-          )
-        })
-}
+        {
+          Object.keys(totalNutrients).map((nutrientName) => {
+            let nutrient = totalNutrients[nutrientName];
+            return (
+              <div className='nutrient' key={nutrient.name}>
+                <span>{nutrient.name}:</span>
+                <span>{nutrient.value.toFixed(2)} {nutrient.unit}</span>
+                {
+                  nutrient.name==='Energy' && nutrient.value.toFixed(0) == 27000 &&
+                  <div>
+                    <br></br>
+                    <b>Il primo indizio sei TU</b>
+                    <br></br>
+                    <Link to={'../minesweeper'}>Prossima sfida</Link>
+                  </div>
+                }
+              </div>
+            )
+          })
+        }
       </div>
     )
   }
 }
 
 Total.propTypes = {
-  dietList: PropTypes.array.isRequired
+  dietList: PropTypes.object.isRequired,
+  foodNutrientsArray: PropTypes.array.isRequired
 }
 
 Total.defaultProps = {
-  dietList: []
+  dietList: {}
 }
 
 export default Total;

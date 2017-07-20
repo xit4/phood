@@ -7,6 +7,8 @@ import FoodLister from '../FoodLister';
 import Modal from '../Modal';
 import DietPicker from '../DietPicker';
 import DietLinker from '../DietLinker';
+import { addFoodToDiet, createDiet, deleteDiet, saveFood } from '../../actions';
+import { connect } from 'react-redux';
 import './style.scss';
 
 class Home extends React.Component {
@@ -14,9 +16,6 @@ class Home extends React.Component {
     super(props);
     this.state = {
       isModalOpen: false,
-      foodList: [],
-      dietsList: [],
-      errorMessage: '',
       moreToShow: false,
       foodToAdd: {}
     };
@@ -39,8 +38,6 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const initialDietsList = storage.getStoredObject('dietsList', []);
-    this.setState({dietsList: initialDietsList});
   }
 
   handleSubmitFoodName(foodName) {
@@ -60,39 +57,32 @@ class Home extends React.Component {
       'strawberry-icon',
       'melon-icon'
     ]
-    const {dietsList} = this.state;
-    let newDietsList = [
-      ...dietsList, {
-        id: dietsList.length,
-        name: newDietName,
-        items: {},
-        icon: imagesArray[Math.floor(Math.random()*imagesArray.length)]
-      }
-    ];
-    this.setState({dietsList: newDietsList});
-    storage.storeObject('dietsList', newDietsList);
+    const { dietsList, createDiet } = this.props;
+    createDiet({
+      id: this.genId(),
+      name: newDietName,
+      items: {},
+      icon: imagesArray[Math.floor(Math.random()*imagesArray.length)]
+    });
+  }
+
+  genId() {
+    return 'yxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   handleSelectDiet(diet) {
-    const {dietsList, foodToAdd} = this.state;
-    let foodToAddComplete = {...foodToAdd, quantity: 0}
-    let newDietsList = [...dietsList];
-    newDietsList[diet.id] = {
-      ...diet,
-      items: {
-        ...diet.items,
-        [foodToAddComplete.ndbno]: foodToAddComplete
-      }
-    }
-    this.setState({dietsList: newDietsList, foodToAdd: {}, headerClass: 'new-diet'});
-    storage.storeObject('dietsList', newDietsList);
+    const { foodToAdd } = this.state;
+    let foodToAddComplete = {...foodToAdd}
+    this.props.saveFood(foodToAdd)
+    this.props.addFoodToDiet(diet.id, foodToAddComplete.ndbno);
     this.toggleModal(false);
   }
 
   handleDeleteDiet(dietToDelete) {
-    const {dietsList} = this.state;
-    const newDietsList = [...dietsList].filter(diet => diet.id !== dietToDelete.id);
-    storage.storeObject('dietsList', newDietsList, this.setStateCallback);
+    this.props.deleteDiet(dietToDelete.id);
   }
 
   handleLoadMore() {
@@ -105,7 +95,7 @@ class Home extends React.Component {
   }
 
   resetState() {
-    this.setState({foodList: [], errorMessage: '', moreToShow: false});
+    this.setState({foodList: [], moreToShow: false});
   }
 
   setStateCallback(obj) {
@@ -118,22 +108,34 @@ class Home extends React.Component {
 
   render() {
     const {
-      dietsList,
       isModalOpen,
-      foodList,
-      errorMessage,
       moreToShow,
       foodToAdd
     } = this.state;
+    const { dietsList} = this.props;
     return (
       <div className='home'>
-        <Header className={this.state.headerClass} onSubmitFoodName={this.handleSubmitFoodName} onOpenDiet={this.handleOpenDiet}/>
-        <FoodLister foodList={foodList} onAddFood={this.handleAddFood} moreToLoad ={moreToShow} onLoadMore={this.handleLoadMore} errorMessage={errorMessage}/>
-        <Modal className='diet-modal' isOpen={isModalOpen} onClose={() => {
-          this.setState({foodToAdd: {}});
-          this.toggleModal(false);
-        }}>
-          {foodToAdd.ndbno && <DietPicker dietsList={dietsList} onSelectDiet={this.handleSelectDiet} onCreateDiet={this.handleCreateDiet} onDeleteDiet={this.handleDeleteDiet}/>}
+        <Header
+          className={this.state.headerClass}
+          onOpenDiet={this.handleOpenDiet}/>
+        <FoodLister
+          onAddFood={this.handleAddFood}
+          moreToLoad ={moreToShow}
+          onLoadMore={this.handleLoadMore}/>
+        <Modal
+          className='diet-modal'
+          isOpen={isModalOpen}
+          onClose={() => {
+            this.setState({foodToAdd: {}});
+            this.toggleModal(false);
+          }}>
+          {foodToAdd.ndbno &&
+            <DietPicker
+              dietsList={dietsList}
+              onSelectDiet={this.handleSelectDiet}
+              onCreateDiet={this.handleCreateDiet}
+              onDeleteDiet={this.handleDeleteDiet}/>
+          }
         </Modal>
       </div>
     )
@@ -142,4 +144,8 @@ class Home extends React.Component {
 
 Home.propTypes = {}
 
-export default Home;
+function mapStateToProps({ dietsList }){
+  return { dietsList };
+}
+
+export default connect(mapStateToProps, { createDiet, addFoodToDiet, saveFood, deleteDiet })(Home);

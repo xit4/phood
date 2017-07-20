@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DietItem from '../DietItem';
+import _ from 'lodash';
 
 class DietLister extends React.Component {
   constructor (props){
@@ -16,7 +17,7 @@ class DietLister extends React.Component {
         <span className='title'>{dietName}</span>
         <hr style={{border:'solid white'}}></hr>
         { dietList.length > 0 &&
-          dietList.map((food)=>{
+          dietList.map(food => {
             return (
               <DietItem
                 onChangeQuantity={onChangeQuantity}
@@ -45,7 +46,7 @@ DietLister.propTypes = {
 
 DietLister.defaultProps = {
   dietName:'',
-  dietList: []
+  dietList: {}
 }
 
 export default DietLister;

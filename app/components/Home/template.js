@@ -62,7 +62,7 @@ export default class Home extends React.Component {
   }
 
   handleDeleteDiet(dietToDelete) {
-    this.props.deleteDiet(dietToDelete.id);
+    this.props.deleteDiet(dietToDelete);
   }
 
   // handleLoadMore() {

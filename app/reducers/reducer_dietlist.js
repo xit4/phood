@@ -2,9 +2,10 @@ import {
   ADD_FOOD_DIET,
   CREATE_DIET,
   DELETE_DIET,
+  DELETE_DIET_OK,
   UPDATE_FOOD_QUANTITY,
   DELETE_FOOD,
-} from '../actions'
+} from '../actions/ActionTypes'
 import _ from 'lodash';
 
 export default function (state = {}, action) {
@@ -28,7 +29,7 @@ export default function (state = {}, action) {
         ...state,
         [action.diet.id]: action.diet
       };
-    case DELETE_DIET:
+    case DELETE_DIET_OK:
       return _.omit(state, action.dietId);
     case DELETE_FOOD:
     {

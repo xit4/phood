@@ -1,7 +1,8 @@
 import {
   UPDATE_FOOD_NUTRIENTS_OK,
-  SAVE_FOOD
-} from '../actions'
+  SAVE_FOOD,
+  DELETE_FOOD
+} from '../actions/ActionTypes'
 import _ from 'lodash';
 
 export default function (state = {}, action) {
@@ -23,6 +24,8 @@ export default function (state = {}, action) {
       })
       return newSavedFoods;
     }
+    case DELETE_FOOD:
+      return _.omit(state, action.foodId);
     default:
       return state;
   }

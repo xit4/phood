@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
 import reducers from './reducers';
 
 import Home from './components/Home';
@@ -14,15 +13,21 @@ import MineSweeper from './components/MineSweeper';
 import DietLinker from './components/DietLinker';
 import './index.scss';
 
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from './sagas'
+
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {}
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   reducers,
   persistedState,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(rootSaga);
 
 store.subscribe(()=>{
   localStorage.setItem('reduxState', JSON.stringify(store.getState()))

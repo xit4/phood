@@ -2,7 +2,7 @@ import {
   FETCH_FOOD_LIST_OK,
   FETCH_FOOD_INFO_OK,
   RESET_FOOD_LIST
-} from '../actions'
+} from '../actions/ActionTypes'
 
 import _ from 'lodash';
 

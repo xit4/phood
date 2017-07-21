@@ -3,7 +3,7 @@ import {
   FETCH_FOOD_LIST_KO,
   RESET_ERRORS,
   UPDATE_FOOD_NUTRIENTS_KO,
-} from '../actions'
+} from '../actions/ActionTypes'
 
 export default function (state = {}, action) {
   switch(action.type){
